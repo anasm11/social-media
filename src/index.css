@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .App{
+        padding: theme('spacing.6');
+        display:grid;
+        gap:2rem;
+        grid-template-rows:min-content 1fr;
+        grid-template-columns:min-content 1fr fit-content;
+    }
+
+    .home{
+        display:flex;
+        grid-column:2/3;
+        flex-direction:column;
+        gap:1rem;
+        border-right:1px solid #dbdbdb;
+        border-left:1px solid #dbdbdb;
+    }
+
+    .navigation{
+        grid-column:1/4;
+        position:sticky;
+    }
+
+    .sidebar{
+        grid-column:1/2;
+        position:sticky;
+    }
+
+    .button {
+        color:theme(colors.white);
+        background-color:theme(colors.blue.500);
+        padding: theme('spacing.1') theme('spacing.2') theme('spacing.1') theme('spacing.2');
+        font-weight:theme(fontWeight.medium);
+        border-radius:theme('borderRadius.xl');
+    }
+
+    .button:hover{
+        background-color:theme('colors.blue.700');
+    }
+
+    .button:focus{
+        outline:none;
+        background-color:theme('colors.blue.800');
+    }
+
+    .profile-dropdown li{
+        padding:theme('spacing.1');
+        align-self:center;
+    }
+
+    .profile-dropdown{
+        text-align:center;
+        padding:theme('spacing.1');
+        background-color:theme('colors.gray.200');
+        border-radius:theme('borderRadius.xl');
+    }
+
+    .textarea{
+        height:8rem
+    }
+     /* hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white */
+  }
