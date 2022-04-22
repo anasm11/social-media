@@ -3,7 +3,7 @@ import { updatePostApiCall } from "../utils/postApiCalls"
 
 
 const EditModal = ({ props }) => {
-    const { showEditModal: post, setShowEditModal, dispatchPost } = props
+    const {postsState, showEditModal: post, setShowEditModal, dispatchPost } = props
     const [postToBeEdited, setPostToBeEdited] = useState(post)
 
     return (
@@ -15,7 +15,7 @@ const EditModal = ({ props }) => {
             <button className='button' onClick={async () => {
                 setShowEditModal(null)
                 const res = await updatePostApiCall(post._id, postToBeEdited.content);
-                dispatchPost({ type: 'UPDATE', payload: res.data.posts })
+                dispatchPost({ type: 'UPDATE', payload: {...postsState,allPosts:res.data.posts} })
                 console.log(res.data)
             }}>Save</button>
         </div>

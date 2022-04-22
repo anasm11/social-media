@@ -3,8 +3,8 @@ import { useState } from "react"
 import { createPostApiCall } from "../utils/postApiCalls"
 
 
-const CreatePost = ({ methods }) => {
-    const { setIsCreatePostVis, dispatchPost } = methods
+const CreatePost = ({ props }) => {
+    const {postsState, setIsCreatePostVis, dispatchPost } = props
     const [postContent, setPostContent] = useState('')
 
     return (
@@ -14,7 +14,7 @@ const CreatePost = ({ methods }) => {
             <button className='button' onClick={async () => {
                 setIsCreatePostVis(false)
                 const res = await createPostApiCall(postContent);
-                dispatchPost({ type: 'UPDATE', payload: res.data.posts })
+                dispatchPost({ type: 'UPDATE', payload: {...postsState,allPosts:res.data.posts} })
                 console.log(res.data)
             }}>Post</button>
         </div>
