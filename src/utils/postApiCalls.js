@@ -1,7 +1,6 @@
 import axios from "axios"
 
 const createPostApiCall=async(postContent)=>{
-    console.log(postContent,'pop')
     try{const res = await axios({
         method: 'post',
         url: '/api/posts/',
@@ -15,7 +14,7 @@ const createPostApiCall=async(postContent)=>{
     return res
 }
     catch(e){
-        console.log(e,'error')
+        console.error(e)
     }
 
     

@@ -27,7 +27,6 @@ const Home = () => {
                                 {post.likes.likedBy.find((person) => person.firstName === 'a') ? <IcRoundFavorite /> : <IcRoundFavoriteBorder onClick={async () => {
                                     const res = await likePostApiCall(post)
                                     dispatchPost({ type: 'UPDATE', payload: res.data.posts })
-                                    console.log(res.data.posts, 'after likinf')
                                 }} />}
                                 {post.likes.likeCount}
                             </span>

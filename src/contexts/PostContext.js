@@ -8,6 +8,9 @@ const postReducer=(state,{type,payload})=>{
         case ('UPDATE'):{
             return payload
         }
+        default :{
+            return payload
+        }
     }
 }
 
@@ -23,8 +26,6 @@ const PostProvider=({children})=>{
                 }
             })
             dispatchPost({type:'UPDATE',payload:res.data.posts})
-
-            console.log(res.data,'posts useeff')
         })()
     },[])
     const [postsState,dispatchPost]=useReducer(postReducer,[])
