@@ -1,0 +1,9 @@
+.profile-icon{
+    position:relative;
+}
+
+.profile-dropdown{
+    position:absolute;
+    top:60%;
+    left:50%;
+}
