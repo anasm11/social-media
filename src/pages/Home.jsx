@@ -1,4 +1,5 @@
 import { useState, useContext } from "react"
+import {Link} from "react-router-dom"
 import { CreatePost, EditModal } from "../components/index"
 import { PostContext } from "../contexts/index"
 import { IcRoundFavoriteBorder, IcRoundFavorite, IcRoundComment } from "../assets/index"
@@ -12,7 +13,6 @@ const Home = () => {
     const likeHandler = async (post) => {
         const res = await likePostApiCall(post)
         dispatchPost({ type: 'UPDATE', payload: { ...postsState, allPosts: res.data.posts } })
-        console.log(res.data.posts, 'after likinf')
     }
 
     const deleteHandler = async (post) => {
@@ -34,7 +34,6 @@ const Home = () => {
             } />Trending</label>
 
             <label for='date-sort'><input type='radio' name='date-sort' onChange={(e) => {
-                console.log('most rec')
                 e.target.checked && dispatchPost({ type: 'SORT_BY_DATE', payload: { ...postsState, sortByDate: 'mostRecent' } })
             }
             } />Most Recent</label>
@@ -45,7 +44,7 @@ const Home = () => {
             {postsState.displayPosts.map((post) =>
                 <div key={post._id}>
                     <hr />
-                    <div>{post.username}</div>
+                    <div><Link to={`/user/${post.username}`}>{post.username}</Link></div>
 
                     <p>{post.content}</p>
 

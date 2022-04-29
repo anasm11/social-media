@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom"
 import './App.css'
 import './index.css'
-import { CreatePost, EditModal,Navigation,Sidebar } from "./components/index"
-import { Home, Login } from "./pages/index"
+import { Navigation,Sidebar } from "./components/index"
+import { Home, Login,Profile,User } from "./pages/index"
 
 const App = () => {
     return <div className='App'>
@@ -11,6 +11,8 @@ const App = () => {
         <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<Login />} />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/user/:username' element={<User/>}/>
         </Routes>
     </div>
 }

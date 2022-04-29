@@ -11,7 +11,6 @@ const CreatePost = ({ props }) => {
         setIsCreatePostVis(false)
         const res = await createPostApiCall(postContent);
         dispatchPost({ type: 'UPDATE', payload: { ...postsState, allPosts: res.data.posts } })
-        console.log(res.data)
     }
 
     return (

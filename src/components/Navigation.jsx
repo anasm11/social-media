@@ -5,8 +5,8 @@ import { IcRoundAccountCircle } from "../assets/index"
 const Navigation = () => {
     const [isAccDetVis, setIsAccDetVis] = useState(false)
     return (
-        <div className="navigation">
-            <nav className="flex px-10  sm:justify-between space-x-4">
+        <div className="sticky top-0 navigation">
+            <nav className="flex justify-between">
                 <h1 className="font-medium leading-tight text-3xl mt-0 mb-2 text-blue-400">
                     TownSquare
                 </h1>
