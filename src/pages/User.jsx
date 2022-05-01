@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom"
 import { useEffect, useState, useContext } from "react"
 
-import { PostContext } from "../contexts/index"
+import { PostContext, useLoginUser } from "../contexts/index"
 import { Link } from "react-router-dom"
 import axios from "axios"
 import { likePostApiCall, deletePostApiCall } from "../utils/postApiCalls"
@@ -9,10 +9,11 @@ import { IcRoundFavoriteBorder, IcRoundFavorite } from "../assets/index"
 
 
 const User = () => {
+    const { loggedUserState, loginDispatch } = useLoginUser()
     const { postsState, dispatchPost } = useContext(PostContext)
     const location = useLocation()
     const username = location.pathname.split('/')[2]
-    const [isFollowing,setIsFollowing] =useState(false)
+    const [isFollowing, setIsFollowing] = useState(false)
     let selfname
 
     useEffect(() => {
@@ -21,14 +22,13 @@ const User = () => {
             const token = localStorage.getItem('token')
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace('-', '+').replace('_', '/');
-            selfname=JSON.parse(window.atob(base64)).username;
+            selfname = JSON.parse(window.atob(base64)).username;
 
             const res1 = await axios({
                 method: 'get',
                 url: `/api/users`
             })
-
-            res1.data.users.find((user)=>user.username===username && user.followers.find((user1)=>user1.username===selfname))&&setIsFollowing(true)
+            res1.data.users.find((user) => user.username === username && user.followers.find((user1) => user1.username === selfname)) && setIsFollowing(true)
         })()
     }, [])
 
@@ -51,7 +51,7 @@ const User = () => {
                     const followUserId = res.data.users.find((user) => user.username === username)._id
 
                     let url
-                    url=isFollowing?`/api/users/unfollow/${followUserId}/`:`/api/users/follow/${followUserId}/`
+                    url = isFollowing ? `/api/users/unfollow/${followUserId}/` : `/api/users/follow/${followUserId}/`
                     const res1 = await axios({
                         method: 'post',
                         url: url,
@@ -59,10 +59,31 @@ const User = () => {
                             authorization: localStorage.getItem('token')
                         }
                     })
-                    isFollowing?setIsFollowing(false):setIsFollowing(true)
-                }}>{isFollowing?'Unfollow':'Follow'}</button>
+
+                    if (isFollowing)
+                        setIsFollowing(false);
+
+                    else {
+                        setIsFollowing(true);
+                        
+                        (async () => {
+                            const token = localStorage.getItem('token')
+                            const base64Url = token.split('.')[1];
+                            const base64 = base64Url.replace('-', '+').replace('_', '/');
+                            const selfname=JSON.parse(window.atob(base64)).username;
+                
+                            const res=await axios({
+                                method:'get',
+                                url:`/api/users`
+                            })
+                
+                            const self=res.data.users.find((user)=>user.username===selfname)
+                            loginDispatch({action:'UPDATE',payload:self})
+                        })()
+                    }
+                }}>{isFollowing ? 'Unfollow' : 'Follow'}</button>
             </div>
-            {postsState.allPosts.filter((post)=>post.username===username).map((post) =>
+            {postsState.allPosts.filter((post) => post.username === username).map((post) =>
                 <div key={post._id}>
                     <hr />
                     <div><Link to={`/user/${post.username}`}>{post.username}</Link></div>
@@ -77,10 +98,6 @@ const User = () => {
                             </span>
 
                         </div>
-                        {selfname===username &&<div className='flex gap-4'>
-                        {/* <button className='button' onClick={() => { setShowEditModal(post) }}>Edit</button>
-                        <button className='button' onClick={() => deleteHandler(post)}>Delete</button> */}
-                    </div> }
                     </div>
                 </div>
 

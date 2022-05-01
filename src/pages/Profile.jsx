@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState,useEffect,useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 
 const Profile = () => {
     const [url, setURL] = useState('')
@@ -7,51 +7,65 @@ const Profile = () => {
     const [user, setUser] = useState('')
     const [isEditState, setIsEditState] = useState(false)
 
-    const inputFile=useRef(null)
-    const [image,setImage]=useState(null)
-    
-    useEffect(()=>{
+    const inputFile = useRef(null)
+    const [image, setImage] = useState(null)
 
-        (async()=>{
+    useEffect(() => {
+
+        (async () => {
             const token = localStorage.getItem('token')
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace('-', '+').replace('_', '/');
-            const selfname=JSON.parse(window.atob(base64)).username;
+            const selfname = JSON.parse(window.atob(base64)).username;
 
             const res = await axios({
                 method: 'get',
                 url: `/api/users`
             })
 
-            const user=res.data.users.find((user)=>user.username===selfname )
+            const user = res.data.users.find((user) => user.username === selfname)
             setBio(user.bio)
             setURL(user.url)
             setImage(user.img)
             setUser(user)
         })()
-    },[])
+    }, [])
+
+    const readFile = (event) => {
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            setImage(reader.result)
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    const saveDetails = async() => {
+        setIsEditState(false)
+
+        const res = await axios({
+            method: 'POST',
+            url: '/api/users/edit',
+            headers: {
+                authorization: localStorage.getItem('token')
+            },
+            data: { userData: { ...user, bio: bio, url: url, img: image } }
+        })
+    }
 
     return (<div className='flex relative gap-5'>
         <input
-        type="file"
-        name="myImage"
-        ref={inputFile}
-        onChange={(event) => {
-        
-          var reader = new FileReader();
-            reader.onloadend = function() {
-              setImage(reader.result)
-            }
-            reader.readAsDataURL(event.target.files[0]);
-        }}
-        style={{display: 'none'}}
-      />
+            type="file"
+            name="myImage"
+            ref={inputFile}
+            onChange={(event) => readFile(event)}
+            style={{ display: 'none' }}
+        />
         <span className='edit-photo-container bg-gray-300 flex' onClick={(event) => {
-            inputFile.current.click()            
-          }}>
-        
-            <img className='edit-profile-photo' width={'200px'} src={image} />
-            <div className='overlay-text'>Upload new photo</div>
+            inputFile.current.click()
+        }}>
+
+            <img className='edit-profile-photo' width={'200px'} src={image} alt='profile-photo'/>
+            <div className='overlay-text'><mark>Upload new photo</mark></div>
         </span>
 
         <button className='absolute button top-0 right-0' onClick={() => setIsEditState(true)}>Edit</button>
@@ -73,18 +87,7 @@ const Profile = () => {
                     </label>
                     : <a className='link'>{url}</a>}
             </div>
-            <button className='button' onClick={async()=>{
-                setIsEditState(false)
-
-                const res=await axios({
-                    method: 'POST',
-                    url:'/api/users/edit',
-                    headers:{
-                        authorization:localStorage.getItem('token')
-                    },
-                    data:{userData:{...user,bio:bio,url:url,img:image}}
-                })
-                }}>Save</button>
+            <button className='button' onClick={() => saveDetails()}>Save</button>
         </div>
     </div>)
 
