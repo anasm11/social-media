@@ -77,10 +77,6 @@ const User = () => {
                             </span>
 
                         </div>
-                        {selfname===username &&<div className='flex gap-4'>
-                        {/* <button className='button' onClick={() => { setShowEditModal(post) }}>Edit</button>
-                        <button className='button' onClick={() => deleteHandler(post)}>Delete</button> */}
-                    </div> }
                     </div>
                 </div>
 
