@@ -14,6 +14,9 @@ export const users = [
     password: "adarshBalika123",
     createdAt: formatDate(),
     updatedAt: formatDate(),
+    bio:'ad balika bio',
+    url:'adbalikaurl.com',
+    img:'https://picsum.photos/200/200'
   },
   {
     _id: uuid(),
@@ -23,5 +26,8 @@ export const users = [
     password: "b",
     createdAt: formatDate(),
     updatedAt: formatDate(),
+    bio:'a b bio',
+    url:'aburl.com',
+    img:'https://picsum.photos/200/200'
   },
 ];

@@ -1,6 +1,11 @@
 import axios from "axios"
 import { useState } from "react"
 
+const loginHandler=async (email,password) => {
+    const res = await axios.post('/api/auth/login', { username: email, password })
+    localStorage.setItem('token', res.data.encodedToken)
+}
+
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -24,10 +29,7 @@ const Login = () => {
                     </div>
                     <a href="#" class="ml-auto text-sm text-blue-700 hover:underline dark:text-blue-500">Forgot Password?</a>
                 </div>
-                <button onClick={async () => {
-                    const res = await axios.post('/api/auth/login', { username: email, password })
-                    localStorage.setItem('token', res.data.encodedToken)
-                }} class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login to your account</button>
+                <button onClick={()=>loginHandler(email,password)} class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login to your account</button>
                 <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
                     Not registered? <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create account</a>
                 </div>
