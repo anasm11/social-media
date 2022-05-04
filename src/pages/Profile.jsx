@@ -64,7 +64,7 @@ const Profile = () => {
             inputFile.current.click()
         }}>
 
-            <img className='edit-profile-photo' width={'200px'} src={image} alt='profile-photo'/>
+            <img className='edit-profile-photo' src={image} alt='profile-photo'/>
             <div className='overlay-text'><mark>Upload new photo</mark></div>
         </span>
 

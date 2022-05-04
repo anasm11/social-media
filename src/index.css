@@ -62,6 +62,7 @@
     }
 
     .edit-profile-photo{
+        width:200px;
         display:inline;
         clip-path: circle(100px);
     }
