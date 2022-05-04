@@ -1,16 +1,16 @@
-import { useState, useContext, useReducer,useEffect } from "react"
+import { useState, useContext, useEffect,useReducer } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
 import { CreatePost, EditModal } from "../components/index"
-import { PostContext,useLoginUser } from "../contexts/index"
+import { PostContext, useLoginUser } from "../contexts/index"
 import { IcRoundFavoriteBorder, IcRoundFavorite, IcRoundComment, IcRoundBookmarkBorder, IcRoundBookmark } from "../assets/index"
 import { likePostApiCall, deletePostApiCall } from "../utils/postApiCalls"
 import usePostReducer from "../reducers/postDisplayReducer"
 
-const Home = () => {
-
+const Explore = () => {
     const [postsState,dispatchPost]=usePostReducer()
-    const {loggedUserState,loginDispatch}=useLoginUser()
+
+    const { loggedUserState, loginDispatch } = useLoginUser()
     const [isCreatePostVis, setIsCreatePostVis] = useState(false)
     const [showEditModal, setShowEditModal] = useState(null)
 
@@ -33,9 +33,7 @@ const Home = () => {
                     authorization:localStorage.getItem('token')
                 }
             })
-
-            const posts=res.data.posts.filter((post)=>!!loggedUserState.following?.find(user=>user.username===post.username))
-            dispatchPost({type:'UPDATE',payload:{displayPosts:posts,allPosts:posts}})
+            dispatchPost({type:'UPDATE',payload:{displayPosts:res.data.posts,allPosts:res.data.posts}})
 
         })()
     },[])
@@ -43,15 +41,13 @@ const Home = () => {
     return (
         <div className="home px-3 py-2">
 
-            <button type="button" class="button rounded-3xl py-2" onClick={() => setIsCreatePostVis(true)}>Create New Post</button>
-
             {isCreatePostVis && <CreatePost props={{ postsState, setIsCreatePostVis, dispatchPost }} />}
 
             {showEditModal && <EditModal props={{ postsState, showEditModal, setShowEditModal, dispatchPost }} />}
 
-            <label htmlFor='trending-filter'><input type='checkbox' name='trending-filter' onChange={(e) =>
+            <label htmlFor='trending-filter'><input type='checkbox' name='trending-filter' onChange={(e) => {
                 e.target.checked ? dispatchPost({ type: 'FILTER_TRENDING', payload: { ...postsState, filterTrending: true } }) : dispatchPost({ type: '', payload: { ...postsState, filterTrending: false } })
-            } />Trending</label>
+            }} />Trending</label>
 
             <label htmlFor='date-sort'><input type='radio' name='date-sort' onChange={(e) => {
                 e.target.checked && dispatchPost({ type: 'SORT_BY_DATE', payload: { ...postsState, sortByDate: 'mostRecent' } })
@@ -61,6 +57,7 @@ const Home = () => {
                 e.target.checked && dispatchPost({ type: 'SORT_BY_DATE', payload: { ...postsState, sortByDate: 'leastRecent' } })
             } />Least Recent</label>
 
+            {/* {displayPosts.map((post) => */}
             {postsState.displayPosts.map((post) =>
                 <div key={post._id}>
                     <hr />
@@ -79,7 +76,7 @@ const Home = () => {
                             </span>
 
                             <span>
-                                {loggedUserState?.bookmarks?.find((bookmark)=>bookmark._id===post._id)?<IcRoundBookmark/>:<IcRoundBookmarkBorder onClick={async () => {
+                                {loggedUserState?.bookmarks?.find((bookmark) => bookmark._id === post._id) ? <IcRoundBookmark /> : <IcRoundBookmarkBorder onClick={async () => {
                                     const res = await axios({
                                         method: 'post',
                                         url: `/api/users/bookmark/${post._id}`,
@@ -87,7 +84,7 @@ const Home = () => {
                                             authorization: localStorage.getItem('token')
                                         }
                                     })
-                                    loginDispatch({action:'UPDATE',payload:{...loggedUserState,bookmarks:[...loggedUserState.bookmarks,post]}})
+                                    loginDispatch({ action: 'UPDATE', payload: { ...loggedUserState, bookmarks: [...loggedUserState.bookmarks, post] } })
                                 }
                                 } />}
                             </span>
@@ -104,4 +101,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default Explore

@@ -4,9 +4,8 @@
 
 @layer components {
     .App{
-        padding: theme('spacing.6');
         display:grid;
-        gap:2rem;
+        gap:1rem;
         grid-template-rows:min-content 1fr;
         grid-template-columns:min-content 1fr fit-content;
     }
@@ -22,6 +21,7 @@
 
     .navigation{
         grid-column:1/4;
+        padding: theme('spacing.4');
     }
 
     .sidebar{
@@ -62,6 +62,7 @@
     }
 
     .edit-profile-photo{
+        width:200px;
         display:inline;
         clip-path: circle(100px);
     }

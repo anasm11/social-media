@@ -1,3 +1,4 @@
-import { PostProvider,PostContext } from "./PostContext"
+import { PostProvider,PostContext} from "./post-context"
+import { LoginUserProvider,useLoginUser} from "./loginUser-context"
 
-export { PostProvider,PostContext }
+export { PostProvider,PostContext,LoginUserProvider,useLoginUser }

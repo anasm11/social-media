@@ -20,6 +20,18 @@ export const users = [
   },
   {
     _id: uuid(),
+    firstName: "John",
+    lastName: "Doe",
+    username: "johndoe",
+    password: "johndoe123",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+    bio:'john doe bio',
+    url:'johndoeurl.com',
+    img:'https://picsum.photos/200/200'
+  },
+  {
+    _id: uuid(),
     firstName: "a",
     lastName: "b",
     username: "a",
